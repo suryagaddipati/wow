@@ -14,16 +14,25 @@ object Main {
 
     val fileContents = Source.fromFile("/home/surya/code/devops/external.scala").getLines.mkString("\n")
     val tree = toolbox.parse(fileContents)
-    traverser.traverse(tree)
-    println(traverser.applies)
+    val provider = tree.asInstanceOf[Apply]
+
+    println(provider)
+    val apps = applies(provider.children(1))
+    println(apps)
+
   }
 
   def instance(name: String)(f: String => Unit): Unit = {
 
   }
 
-  instance(name = "meow") { meow =>
+  instance(name = "meow")(mew => ""
 
+  )
+
+  def applies(tree: Tree) = {
+    traverser.traverse(tree)
+    traverser.applies
   }
 
   object traverser extends Traverser {
