@@ -12,23 +12,18 @@ object Main {
 
     val toolbox = currentMirror.mkToolBox()
 
-    val fileContents = Source.fromFile("/home/surya/code/devops/external.scala").getLines.mkString("\n")
-    val tree = toolbox.parse(fileContents)
-    val provider = tree.asInstanceOf[Apply]
+    val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/ec2.scala").getLines.mkString("\n")
+    val tree = toolbox.parse("import wow._ ; " + fileContents)
+    toolbox.compile(tree)
+    //    val provider = tree.children(0).asInstanceOf[Apply]
+    //   println(provider)
 
-    println(provider)
-    val apps = applies(provider.children(1))
+
+    val apps = applies(tree.children(1))
     println(apps)
 
   }
 
-  def instance(name: String)(f: String => Unit): Unit = {
-
-  }
-
-  instance(name = "meow")(mew => ""
-
-  )
 
   def applies(tree: Tree) = {
     traverser.traverse(tree)
@@ -45,6 +40,7 @@ object Main {
         super.traverseTrees(args)
       case _ => super.traverse(tree)
     }
+
   }
 
 }
