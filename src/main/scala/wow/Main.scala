@@ -13,7 +13,7 @@ object Main {
     val toolbox = currentMirror.mkToolBox()
 
     val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/ec2.scala").getLines.mkString("\n")
-    val tree = toolbox.parse("import wow._ ; " + fileContents)
+    val tree = toolbox.parse(fileContents)
     toolbox.compile(tree)
     //    val provider = tree.children(0).asInstanceOf[Apply]
     //   println(provider)
