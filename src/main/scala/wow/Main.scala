@@ -15,7 +15,7 @@ object Main {
     val tree = toolbox.parse(fileContents)
     toolbox.compile(tree)
     val k = toolbox.eval(tree)
-    println(k)
+    println(AWS.plan)
 
   }
 

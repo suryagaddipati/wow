@@ -4,28 +4,23 @@ import scala.collection.mutable
 
 
 object AWS {
+  def plan: Plan = Plan(resources)
 
-  def main(args: Array[String]) {
-    import awscala._
-    import awscala.ec2._
-
-    implicit val ec2 = EC2.at(Region.US_EAST_1)
-
-    val existings: Seq[Instance] = ec2.instances
-    //    ec2.
-
-    println(existings)
-  }
 
   var resources = new mutable.MutableList[Resource]()
 
-  case class EC2Resource() extends Resource
 
-  def ec2(ami: String, instanceType: String): Resource = {
-    val r = EC2Resource()
+  def ec2(ami: String, instanceType: String): Instance = add(Instance(ami, instanceType))
+
+  def eip(instance: Instance) = add(EIP(instance))
+
+  def add[R <: Resource](r: R): R = {
     resources += r
     r
   }
 
-  def eip(instance: Resource) = EC2Resource()
+  case class Instance(ami: String, instanceType: String) extends Resource
+
+  case class EIP(instance: Instance) extends Resource
+
 }
