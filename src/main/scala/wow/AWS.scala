@@ -19,8 +19,12 @@ object AWS {
     r
   }
 
-  case class Instance(ami: String, instanceType: String) extends Resource
+  case class Instance(ami: String, instanceType: String) extends Resource {
+    override def dependencies: List[Resource] = List()
+  }
 
-  case class EIP(instance: Instance) extends Resource
+  case class EIP(instance: Instance) extends Resource {
+    override def dependencies: List[Resource] = List(instance)
+  }
 
 }

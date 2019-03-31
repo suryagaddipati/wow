@@ -1,3 +1,5 @@
 package wow
 
-trait Resource {}
+trait Resource {
+  def dependencies: List[Resource]
+}
