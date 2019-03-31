@@ -1,7 +1,10 @@
 package wow
 
+import scala.collection.mutable
+
 
 object AWS {
+
   def main(args: Array[String]) {
     import awscala._
     import awscala.ec2._
@@ -14,13 +17,15 @@ object AWS {
     println(existings)
   }
 
-  def instance(name: String)(f: String => Unit): Unit = {
+  var resources = new mutable.MutableList[Resource]()
 
+  case class EC2Resource() extends Resource
+
+  def ec2(ami: String, instanceType: String): Resource = {
+    val r = EC2Resource()
+    resources += r
+    r
   }
 
-  instance(name = "meow")(mew => ""
-
-  )
-
-  def ec2(ami: String, instanceType: String) = "meow"
+  def eip(instance: Resource) = EC2Resource()
 }

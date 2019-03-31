@@ -1,0 +1,3 @@
+package wow
+
+trait Resource {}
