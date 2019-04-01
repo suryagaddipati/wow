@@ -11,7 +11,7 @@ object Main {
   def main(args: Array[String]) {
     val toolbox = currentMirror.mkToolBox()
 
-    val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/ec2.scala").getLines.mkString("\n")
+    val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/oneInstance.scala").getLines.mkString("\n")
     val tree = toolbox.parse(fileContents)
     toolbox.compile(tree)
     val k = toolbox.eval(tree)

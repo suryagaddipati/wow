@@ -6,7 +6,7 @@ val route = AWS.route(vpc = vpc, internetGateway = internetGateway, destinationC
 
 val awsSubnet = AWS.subnet(vpc = vpc, cidrBlock = "10.0.1.0/24", mapPublicIdOnLaunch = true)
 
-val bl = AWS.ec2(instanceType = "t2.micro", ami = "ami-2757f631")
+val bl = AWS.instance(instanceType = "t2.micro", ami = "ami-2757f631")
 AWS.eip(instance = bl)
 
 

@@ -10,7 +10,7 @@ object AWS extends Provider {
 
   def vpc(cidrBlock: String): VPC = VPC(cidrBlock)
 
-  def ec2(ami: String, instanceType: String): Instance = add(Instance(ami, instanceType))
+  def instance(ami: String, instanceType: String): Instance = add(Instance(ami, instanceType))
 
   def eip(instance: Instance) = add(EIP(instance))
 

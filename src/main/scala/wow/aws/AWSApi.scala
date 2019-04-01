@@ -1,12 +1,13 @@
 package wow.aws
 
+import awscala._
+import awscala.ec2._
+
 object AWSApi {
+  implicit val ec2 = EC2.at(Region.US_EAST_1)
 
   def main(args: Array[String]) {
-    import awscala._
-    import awscala.ec2._
 
-    implicit val ec2 = EC2.at(Region.US_EAST_1)
 
     //    val existings: Seq[Instance] = ec2.instances
     //    ec2.
@@ -15,6 +16,8 @@ object AWSApi {
   }
 
   def create(instance: Instance): Unit = {
+    ec2.runAndAwait(instance.ami, ec2.keyPairs.head)
+
     println(s"creating instance ${instance}")
   }
 
