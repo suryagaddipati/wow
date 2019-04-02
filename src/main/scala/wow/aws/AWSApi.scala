@@ -16,7 +16,7 @@ object AWSApi {
   }
 
   def create(instance: Instance): Unit = {
-    ec2.runAndAwait(instance.ami, ec2.keyPairs.head)
+    val instances = ec2.runAndAwait(instance.ami, ec2.keyPairs.head)
 
     println(s"creating instance ${instance}")
   }
