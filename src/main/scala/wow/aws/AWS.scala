@@ -38,7 +38,7 @@ object AWS {
     override def dependencies: List[wow.Resource] = List()
 
     override def create(): Any = {
-      val instances = ec2.runAndAwait(ami, ec2.keyPairs.head)
+      //      val instances = ec2.runAndAwait(ami, ec2.keyPairs.head)
       println(s"creating instance ${this}")
     }
   }

@@ -10,7 +10,9 @@ case class Plan(resources: mutable.MutableList[Resource]) {
 
   implicit val awsProvider = AWS
 
-  def create() = roots.foreach(_.create)
+  def create() = roots.foreach({ r =>
+    val resp = r.create
+  })
 
 
   def roots: List[Resource] = {
