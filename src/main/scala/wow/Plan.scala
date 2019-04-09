@@ -11,10 +11,16 @@ case class Plan(resources: mutable.MutableList[Resource]) {
   implicit val awsProvider = AWS
 
   def create() = roots.foreach({ r =>
-    val k = JsonUtil.fromJson[wow.aws.AWS.Instance](readState())
+    try {
+      val k = JsonUtil.fromJson[State](readState())
+    } catch {
+      case e => e.printStackTrace()
+    }
     val resp = r.create
-    writeState(JsonUtil.toJson(r))
+    val state = State(List(r))
+    writeState(JsonUtil.toJson(state))
   })
+
 
   def readState() = {
     val source = scala.io.Source.fromFile("state.json")
