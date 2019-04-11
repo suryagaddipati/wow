@@ -1,17 +1,20 @@
 package wow
 
+import java.io.PrintWriter
+
 import wow.aws.AWS
 
 import scala.collection.mutable
 
-case class Plan(resources: mutable.MutableList[Resource]) {
+case class Plan(resources: List[Resource]) {
 
   override def toString() = s"creating ${roots}"
 
   implicit val awsProvider = AWS
 
 
-  def create() = roots.foldLeft(State.current) { (s, r) =>
+  def create(): PrintWriter = roots.foldLeft(State.current) { (s, r) =>
+    Plan(r.dependencies).create()
     if (s.has(r)) {
       println(s"Resource ${r} exists. Skipping..")
       s
