@@ -33,11 +33,7 @@ object AWS {
 
   implicit class RichEC2(val ec2: EC2) extends AnyVal {
     def eip(instanceId: String) = {
-      import com.amazonaws.services.ec2.model.AllocateAddressRequest
-      import com.amazonaws.services.ec2.model.AllocateAddressResult
-      import com.amazonaws.services.ec2.model.AssociateAddressRequest
-      import com.amazonaws.services.ec2.model.AssociateAddressResult
-      import com.amazonaws.services.ec2.model.DomainType
+      import com.amazonaws.services.ec2.model.{AllocateAddressRequest, AssociateAddressRequest, DomainType}
       val allocate_request = new AllocateAddressRequest().withDomain(DomainType.Vpc)
 
       val allocate_response = ec2.allocateAddress(allocate_request)
