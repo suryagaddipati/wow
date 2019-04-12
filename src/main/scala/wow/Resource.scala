@@ -11,5 +11,10 @@ import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
 abstract class Resource {
   def dependencies: List[Resource]
 
+  def doCreate() = {
+    println(s"creating resource ${this}")
+    create()
+  }
+
   def create(): Any
 }
