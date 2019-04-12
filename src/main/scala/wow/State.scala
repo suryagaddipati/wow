@@ -5,7 +5,10 @@ case class State(resources: List[Resource]) {
 
   def has(r: Resource): Boolean = resources.contains(r)
 
-  def save() = writeState(JsonUtil.toJson(this))
+  def save() = {
+    writeState(JsonUtil.toJson(this))
+    this
+  }
 
   def writeState(state: String) = {
     import java.io.PrintWriter

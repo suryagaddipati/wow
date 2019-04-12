@@ -13,14 +13,14 @@ case class Plan(resources: List[Resource]) {
   implicit val awsProvider = AWS
 
 
-  def create(state: State = State.current): PrintWriter = roots.foldLeft(state) { (s, r) =>
-    Plan(r.dependencies).create(state)
-    if (s.has(r)) {
+  def create(state: State = State.current): State = roots.foldLeft(state) { (s, r) =>
+    val newState = Plan(r.dependencies).create(s)
+    if (newState.has(r)) {
       println(s"Resource ${r} exists. Skipping..")
-      s
+      newState
     } else {
       val resp = r.doCreate()
-      s :+ r
+      newState :+ r
     }
   }.save()
 
