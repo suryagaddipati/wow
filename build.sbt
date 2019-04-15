@@ -1,9 +1,8 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / scalaVersion := "2.11.8"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "surya"
-ThisBuild / organizationName := "surya"
 
 lazy val root = (project in file("."))
   .settings(
@@ -16,8 +15,6 @@ lazy val root = (project in file("."))
       "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.9",
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.9",
       "org.scala-sbt" % "command" % "0.13.9"
-
     )
   )
-
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+crossPaths := false
