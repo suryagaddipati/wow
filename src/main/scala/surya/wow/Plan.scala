@@ -1,8 +1,8 @@
-package wow
+package surya.wow
 
 import java.io.PrintWriter
 
-import wow.aws.AWS
+import surya.wow.aws.AWS
 
 import scala.collection.mutable
 

@@ -1,4 +1,4 @@
-import wow.aws.AWS
+import surya.wow.aws.AWS
 
 val vpc = AWS.vpc(cidrBlock = "10.0.0.0/16")
 val internetGateway = AWS.internetGateway(vpc = vpc)

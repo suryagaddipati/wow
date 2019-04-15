@@ -1,4 +1,4 @@
-package wow
+package surya.wow
 
 case class State(resources: List[Resource]) {
   def :+(r: Resource): State = State(resources :+ r)

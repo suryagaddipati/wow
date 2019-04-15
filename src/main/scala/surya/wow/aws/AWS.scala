@@ -1,7 +1,7 @@
-package wow.aws
+package surya.wow.aws
 
 import awscala.ec2.EC2
-import wow._
+import surya.wow.{Plan, Resource}
 
 import scala.collection.mutable
 
@@ -20,13 +20,13 @@ object AWS {
 
   def route(vpc: VPC, internetGateway: InternetGateway, destinationCidrBlock: String): Route = add(Route(vpc, internetGateway, destinationCidrBlock))
 
-  var resources = new mutable.MutableList[wow.Resource]()
+  var resources = new mutable.MutableList[Resource]()
 
   def create: Any = plan.create()
 
   def plan: Plan = Plan(resources.toList)
 
-  def add[R <: wow.Resource](r: R): R = {
+  def add[R <: Resource](r: R): R = {
     resources += r
     r
   }
@@ -51,10 +51,10 @@ object AWS {
 
   implicit val ec2 = EC2.at(Region.US_EAST_1)
 
-  case class Instance(ami: String, instanceType: String) extends wow.Resource {
+  case class Instance(ami: String, instanceType: String) extends surya.wow.Resource {
     var id = ""
 
-    override def dependencies: List[wow.Resource] = List()
+    override def dependencies: List[surya.wow.Resource] = List()
 
     override def create(): Any = {
       val instances = ec2.runAndAwait(ami, ec2.keyPairs.head)
@@ -63,34 +63,34 @@ object AWS {
     }
   }
 
-  case class EIP(instance: Instance) extends wow.Resource {
-    override def dependencies: List[wow.Resource] = List(instance)
+  case class EIP(instance: Instance) extends surya.wow.Resource {
+    override def dependencies: List[surya.wow.Resource] = List(instance)
 
     override def create(): Any = {
       ec2.eip(instance.id)
     }
   }
 
-  case class VPC(cidrBlock: String) extends wow.Resource {
-    override def dependencies: List[wow.Resource] = List()
+  case class VPC(cidrBlock: String) extends surya.wow.Resource {
+    override def dependencies: List[surya.wow.Resource] = List()
 
     override def create(): Any = ???
   }
 
-  case class InternetGateway(vpc: VPC) extends wow.Resource {
-    override def dependencies: List[wow.Resource] = List(vpc)
+  case class InternetGateway(vpc: VPC) extends surya.wow.Resource {
+    override def dependencies: List[surya.wow.Resource] = List(vpc)
 
     override def create(): Any = ???
   }
 
-  case class Route(vpc: VPC, internetGateway: InternetGateway, destinationCidrBlock: String) extends wow.Resource {
-    override def dependencies: List[wow.Resource] = List(vpc, internetGateway)
+  case class Route(vpc: VPC, internetGateway: InternetGateway, destinationCidrBlock: String) extends surya.wow.Resource {
+    override def dependencies: List[surya.wow.Resource] = List(vpc, internetGateway)
 
     override def create(): Any = ???
   }
 
-  case class Subnet(vpc: VPC, cidrBlock: String, mapPublicIdOnLaunch: Boolean) extends wow.Resource {
-    override def dependencies: List[wow.Resource] = List(vpc)
+  case class Subnet(vpc: VPC, cidrBlock: String, mapPublicIdOnLaunch: Boolean) extends surya.wow.Resource {
+    override def dependencies: List[surya.wow.Resource] = List(vpc)
 
     override def create(): Any = ???
   }

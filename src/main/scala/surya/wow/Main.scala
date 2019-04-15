@@ -1,13 +1,13 @@
-package wow
+package surya.wow
 
-
-import wow.aws._
 
 import scala.io.Source
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
 import sbt._
 import java.io.{File, PrintWriter}
+
+import surya.wow.aws.AWS
 
 object Main extends xsbti.AppMain {
   def main(args: Array[String]) {
@@ -47,6 +47,6 @@ object Main extends xsbti.AppMain {
     * An application would need to do more here to customize the logging level and
     * provide access to the backing file (like sbt's last command and logLevel setting). */
   def initialGlobalLogging: GlobalLogging =
-    GlobalLogging.initial(MainLogging.globalDefault _, File.createTempFile("hello", "log"))
+    GlobalLogging.initial(MainLogging.globalDefault(ConsoleOut.systemOut), File.createTempFile("hello", "log"), ConsoleOut.systemOut)
 
 }
