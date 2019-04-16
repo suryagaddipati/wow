@@ -4,10 +4,10 @@ package surya.wow
 import scala.io.Source
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
-import sbt._
 import java.io.{File, PrintWriter}
 
 import surya.wow.aws.AWS
+import xsbti.Exit
 
 object Main extends xsbti.AppMain {
   def main(args: Array[String]) {
@@ -21,32 +21,33 @@ object Main extends xsbti.AppMain {
 
   }
 
-  /** Defines the entry point for the application.
-    * The call to `initialState` sets up the application.
-    * The call to runLogged starts command processing. */
-  def run(configuration: xsbti.AppConfiguration): xsbti.MainResult =
-    MainLoop.runLogged(initialState(configuration))
+  def run(configuration: xsbti.AppConfiguration) = {
+    // get the version of Scala used to launch the application
+    val scalaVersion = configuration.provider.scalaProvider.version
 
-  /** Sets up the application by constructing an initial State instance with the supported commands
-    * and initial commands to run.  See the State API documentation for details. */
-  def initialState(configuration: xsbti.AppConfiguration): sbt.State = {
-    val commandDefinitions = hello +: BasicCommands.allBasicCommands
-    val commandsToRun = Hello +: "iflast shell" +: configuration.arguments.map(_.trim)
-    sbt.State(configuration, commandDefinitions, Set.empty, None, commandsToRun, sbt.State.newHistory,
-      AttributeMap.empty, initialGlobalLogging, sbt.State.Continue)
+    // Print a message and the arguments to the application
+    println("Hello world!  Running Scala " + scalaVersion)
+    configuration.arguments.foreach(println)
+
+    // demonstrate the ability to reboot the application into different versions of Scala
+    // and how to return the code to exit with
+    scalaVersion match {
+      case "2.10.6" =>
+        new xsbti.Reboot {
+          def arguments = configuration.arguments
+
+          def baseDirectory = configuration.baseDirectory
+
+          def scalaVersion = "2.11.8"
+
+          def app = configuration.provider.id
+        }
+      case "2.11.8" => new Exit(1)
+      case _ => new Exit(0)
+    }
   }
 
-  // defines an example command.  see the Commands page for details.
-  val Hello = "hello"
-  val hello = Command.command(Hello) { s =>
-    s.log.info("Hello!")
-    s
-  }
+  class Exit(val code: Int) extends xsbti.Exit
 
-  /** Configures logging to log to a temporary backing file as well as to the console.
-    * An application would need to do more here to customize the logging level and
-    * provide access to the backing file (like sbt's last command and logLevel setting). */
-  def initialGlobalLogging: GlobalLogging =
-    GlobalLogging.initial(MainLogging.globalDefault(ConsoleOut.systemOut), File.createTempFile("hello", "log"), ConsoleOut.systemOut)
 
 }

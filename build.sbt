@@ -14,7 +14,8 @@ lazy val root = (project in file("."))
       "com.github.seratch" %% "awscala" % "0.8.1",
       "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.9",
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.9",
-      "org.scala-sbt" % "command" % "0.13.9"
+      //      "org.scala-sbt" % "command" % "0.13.9"
+      "org.scala-sbt" % "launcher-interface" % "1.0.0" % "provided"
     )
   )
 crossPaths := false
