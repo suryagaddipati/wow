@@ -9,17 +9,18 @@ import java.io.{File, PrintWriter}
 import surya.wow.aws.AWS
 import xsbti.Exit
 
-object Main extends xsbti.AppMain {
-  def main(args: Array[String]) {
-    val toolbox = currentMirror.mkToolBox()
+final class Main extends xsbti.AppMain {
+  //  def main(args: Array[String]) {
+  //    val toolbox = currentMirror.mkToolBox()
+  //
+  //    val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/oneInstanceWithEip.scala").getLines.mkString("\n")
+  //    val tree = toolbox.parse(fileContents)
+  //    toolbox.compile(tree)
+  //    val k = toolbox.eval(tree)
+  //    AWS.create
+  //
+  //  }
 
-    val fileContents = Source.fromFile("/home/surya/code/wow/src/main/examples/oneInstanceWithEip.scala").getLines.mkString("\n")
-    val tree = toolbox.parse(fileContents)
-    toolbox.compile(tree)
-    val k = toolbox.eval(tree)
-    AWS.create
-
-  }
 
   def run(configuration: xsbti.AppConfiguration) = {
     // get the version of Scala used to launch the application
