@@ -1,4 +1,4 @@
-Infrastr0cture as (scala)code.
+Infrastrcture as (scala)code.
 
 Create your infra
 ``` scala
