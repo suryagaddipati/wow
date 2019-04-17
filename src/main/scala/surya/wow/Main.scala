@@ -20,9 +20,8 @@ final class Main extends xsbti.AppMain {
       AttributeMap.empty, initialGlobalLogging, sbt.State.Continue)
   }
 
-  val Hello = "hello"
-  val hello = Command.command(Hello) { s =>
-    s.log.info("Hello!")
+  val hello = Command.args("create", "fileName") { (s, args) =>
+    Commands.create(s.log, args(0))
     s
   }
 
