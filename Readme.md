@@ -1,4 +1,4 @@
-Infrastrcture as (scala)code.
+Infrastrcture as (scala )code.
 
 ### Getting started
 
@@ -47,3 +47,5 @@ sbt @wow.properties "create aws.scala"
 Resource Instance(ami-2757f631,t2.micro) exists. Skipping..                            
 Resource EIP(Instance(ami-2757f631,t2.micro)) exists. Skipping.. 
 ```
+
+Take a look at the [example repo](suryagaddipati/wow-examples)
