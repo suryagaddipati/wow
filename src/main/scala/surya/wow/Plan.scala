@@ -6,15 +6,17 @@ import surya.wow.aws.AWS
 
 import scala.collection.mutable
 
-case class Plan(resources: List[Resource]) {
+case class Plan(state: State, resources: Resource*) {
+  def desribe(): Plan.Description = Plan.Description()
+
 
   override def toString() = s"creating ${roots}"
 
   implicit val awsProvider = AWS
 
 
-  def create(state: State = State.current): State = roots.foldLeft(state) { (s, r) =>
-    val newState = Plan(r.dependencies).create(s)
+  def create(): State = roots.foldLeft(state) { (s, r) =>
+    val newState = Plan(s, r.dependencies: _*).create()
     if (newState.has(r)) {
       println(s"Resource ${r} exists. Skipping..")
       newState
@@ -32,5 +34,12 @@ case class Plan(resources: List[Resource]) {
     })
     rList
   }
+
+
+}
+
+object Plan {
+
+  case class Description()
 
 }

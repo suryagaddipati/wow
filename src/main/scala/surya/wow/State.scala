@@ -1,7 +1,7 @@
 package surya.wow
 
-case class State(resources: List[Resource]) {
-  def :+(r: Resource): State = State(resources :+ r)
+case class State(resources: Resource*) {
+  def :+(r: Resource): State = State(resources :+ r: _*)
 
   def has(r: Resource): Boolean = resources.contains(r)
 
@@ -25,7 +25,7 @@ object State {
   def current() = {
     readState() match {
       case Some(s) => s
-      case None => State(List())
+      case None => State()
     }
   }
 
