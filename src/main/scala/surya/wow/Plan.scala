@@ -7,15 +7,26 @@ import surya.wow.aws.AWS
 import scala.collection.mutable
 
 case class Plan(state: State, resources: Resource*) {
-  def desribe(): Plan.Description = Plan.Description()
+  def describe(): Plan.Description = {
+    val roots = getRoots
+    val ad = roots.foldLeft(List[Resource]()) { (ad, r) =>
+      if (!state.has(r)) {
+        (ad :+ r)
+      } else {
+        ad
+      }
+    }
+
+    Plan.Description(ad, state.diff(ad))
+  }
 
 
-  override def toString() = s"creating ${roots}"
+  override def toString() = s"creating ${getRoots}"
 
   implicit val awsProvider = AWS
 
 
-  def create(): State = roots.foldLeft(state) { (s, r) =>
+  def create(): State = getRoots.foldLeft(state) { (s, r) =>
     val newState = Plan(s, r.dependencies: _*).create()
     if (newState.has(r)) {
       println(s"Resource ${r} exists. Skipping..")
@@ -27,7 +38,7 @@ case class Plan(state: State, resources: Resource*) {
   }.save()
 
 
-  def roots: List[Resource] = {
+  def getRoots: List[Resource] = {
     var rList = resources.toList
     resources.foreach(r => {
       rList = rList.filter(rr => !r.dependencies.contains(rr))
@@ -40,6 +51,10 @@ case class Plan(state: State, resources: Resource*) {
 
 object Plan {
 
-  case class Description()
+  case class Description(a: Seq[Resource], d: Seq[Resource]) {
+    def additions(): Seq[Resource] = a
+
+    def deletions(): Seq[Resource] = d
+  }
 
 }

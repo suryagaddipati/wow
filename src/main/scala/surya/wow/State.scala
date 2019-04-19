@@ -1,6 +1,8 @@
 package surya.wow
 
 case class State(resources: Resource*) {
+  def diff(ad: List[Resource]): scala.Seq[_root_.surya.wow.Resource] = resources.diff(ad)
+
   def :+(r: Resource): State = State(resources :+ r: _*)
 
   def has(r: Resource): Boolean = resources.contains(r)
@@ -17,8 +19,6 @@ case class State(resources: Resource*) {
       close
     }
   }
-
-
 }
 
 object State {
