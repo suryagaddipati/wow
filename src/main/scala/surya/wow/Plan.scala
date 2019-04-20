@@ -1,15 +1,35 @@
 package surya.wow
 
-import java.io.PrintWriter
-
 import surya.wow.aws.AWS
 
-import scala.collection.mutable
+case class Plan(additions: Seq[Resource], deletions: Seq[Resource]) {
 
-case class Plan(state: State, resources: Resource*) {
-  def describe(): Plan.Description = {
-    val roots = getRoots
-    val ad = roots.foldLeft(List[Resource]()) { (ad, r) =>
+
+  implicit val awsProvider = AWS
+
+
+  def create(): State = ???
+
+  //    getRoots.foldLeft(state) { (s, r) =>
+  //    val newState = Plan(s, r.dependencies: _*).create()
+  //    if (newState.has(r)) {
+  //      println(s"Resource ${r} exists. Skipping..")
+  //      newState
+  //    } else {
+  //      val resp = r.doCreate()
+  //      newState :+ r
+  //    }
+  //  }.save()
+
+
+}
+
+object Plan {
+
+  def apply(state: State, resources: Resource*): Plan = {
+
+    val roots = getRoots(resources: _*)
+    val add = roots.foldLeft(List[Resource]()) { (ad, r) =>
       if (!state.has(r)) {
         (ad :+ r)
       } else {
@@ -17,44 +37,16 @@ case class Plan(state: State, resources: Resource*) {
       }
     }
 
-    Plan.Description(ad, state.diff(ad))
+    Plan(add, state.resources.diff(add))
+
   }
 
-
-  override def toString() = s"creating ${getRoots}"
-
-  implicit val awsProvider = AWS
-
-
-  def create(): State = getRoots.foldLeft(state) { (s, r) =>
-    val newState = Plan(s, r.dependencies: _*).create()
-    if (newState.has(r)) {
-      println(s"Resource ${r} exists. Skipping..")
-      newState
-    } else {
-      val resp = r.doCreate()
-      newState :+ r
-    }
-  }.save()
-
-
-  def getRoots: List[Resource] = {
+  def getRoots(resources: Resource*): List[Resource] = {
     var rList = resources.toList
     resources.foreach(r => {
       rList = rList.filter(rr => !r.dependencies.contains(rr))
     })
     rList
-  }
-
-
-}
-
-object Plan {
-
-  case class Description(a: Seq[Resource], d: Seq[Resource]) {
-    def additions(): Seq[Resource] = a
-
-    def deletions(): Seq[Resource] = d
   }
 
 }
