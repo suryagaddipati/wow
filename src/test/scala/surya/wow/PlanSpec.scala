@@ -22,7 +22,7 @@ class PlanSpec extends FlatSpec {
     val plan = Plan(State(), one)
     val additions = plan.additions
     val deletions = plan.deletions
-    assert(additions == List(Res("1.1"), one))
+    assert(additions == List(one, Res("1.1")))
   }
 
 }

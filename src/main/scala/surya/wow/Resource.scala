@@ -10,7 +10,9 @@ import surya.wow.aws.AWS
   new Type(value = classOf[AWS.EIP], name = "eip")
 ))
 abstract class Resource {
-  def dependencies: List[Resource]
+  val getAll: Seq[Resource] = dependencies.foldLeft(List(this)) { (all, depp) => all ++ depp.getAll }
+
+  def dependencies: List[Resource] = List()
 
   def doCreate() = {
     println(s"creating resource ${this}")

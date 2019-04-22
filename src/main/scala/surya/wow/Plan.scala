@@ -27,18 +27,16 @@ case class Plan(additions: Seq[Resource], deletions: Seq[Resource]) {
 object Plan {
 
   def apply(state: State, resources: Resource*): Plan = {
-
     val roots = getRoots(resources: _*)
     val add = roots.foldLeft(List[Resource]()) { (ad, r) =>
       if (!state.has(r)) {
-        (ad :+ r)
+        ad ++ r.getAll
       } else {
         ad
       }
     }
 
     Plan(add, state.resources.diff(add))
-
   }
 
   def getRoots(resources: Resource*): List[Resource] = {

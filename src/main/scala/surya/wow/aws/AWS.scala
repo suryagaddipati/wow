@@ -24,7 +24,7 @@ object AWS {
 
   def create: Any = plan.create()
 
-  def plan: Plan = Plan.create(surya.wow.State.current, resources: _*)
+  def plan: Plan = Plan(surya.wow.State.current, resources: _*)
 
   def add[R <: Resource](r: R): R = {
     resources += r
