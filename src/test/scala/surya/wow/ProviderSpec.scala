@@ -2,7 +2,7 @@ package surya.wow
 
 import org.scalatest.FlatSpec
 
-class PlanSpec extends FlatSpec {
+class ProviderSpec extends FlatSpec {
 
   case class Res(name: String, deps: Resource*) extends Resource {
     override def dependencies: List[Resource] = deps.toList
@@ -10,18 +10,23 @@ class PlanSpec extends FlatSpec {
     override def create(): Any = {}
   }
 
+  case class DummyProvider(state: State = State()) extends ProviderWithState {
+  }
+
+
   "Plan" should "list additions and deletions" in {
-    val plan = Plan(State(Res("meow")), Res("purr"))
-    val additions = plan.additions
-    val deletions = plan.deletions
+
+    val provider = DummyProvider(State(Res("meow"))) :+ Res("purr")
+    val additions = provider.changes.additions
+    val deletions = provider.changes.deletions
     assert(additions == List(Res("purr")))
     assert(deletions == List(Res("meow")))
   }
   "Plan" should "additions should list dependencies" in {
     val one = Res("1", Res("1.1"))
-    val plan = Plan(State(), one)
-    val additions = plan.additions
-    val deletions = plan.deletions
+    val plan = DummyProvider() :+ one
+    val additions = plan.changes.additions
+    val deletions = plan.changes.deletions
     assert(additions == List(one, Res("1.1")))
   }
 

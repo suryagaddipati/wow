@@ -17,6 +17,6 @@ object Commands {
     val tree = toolbox.parse(fileContents)
     toolbox.compile(tree)
     val k = toolbox.eval(tree)
-    AWS.create
+    //    AWS.create
   }
 }

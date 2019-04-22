@@ -1,7 +1,7 @@
 package surya.wow.aws
 
 import awscala.ec2.EC2
-import surya.wow.{Plan, Resource}
+import surya.wow.Resource
 
 import scala.collection.mutable
 
@@ -23,9 +23,6 @@ object AWS {
 
   var resources = new mutable.MutableList[Resource]()
 
-  def create: Any = plan.create()
-
-  def plan: Plan = Plan(surya.wow.State.current, resources: _*)
 
   def add[R <: Resource](r: R): R = {
     resources += r
