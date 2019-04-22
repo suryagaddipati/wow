@@ -1,24 +1,14 @@
 package surya.wow
 
 
-case class Plan(additions: Seq[Resource], deletions: Seq[Resource]) {
+trait Plan {
+  def additions: Seq[Resource]
 
+  def deletions: Seq[Resource]
 
   def create(): State = ???
-
-  //    getRoots.foldLeft(state) { (s, r) =>
-  //    val newState = Plan(s, r.dependencies: _*).create()
-  //    if (newState.has(r)) {
-  //      println(s"Resource ${r} exists. Skipping..")
-  //      newState
-  //    } else {
-  //      val resp = r.doCreate()
-  //      newState :+ r
-  //    }
-  //  }.save()
-
-
 }
+
 
 object Plan {
 
@@ -32,7 +22,12 @@ object Plan {
       }
     }
 
-    Plan(add, state.resources.diff(add))
+    //new Plan(add, state.resources.diff(add))
+    new Plan {
+      override def additions: Seq[Resource] = add
+
+      override def deletions: Seq[Resource] = state.resources.diff(add)
+    }
   }
 
   def getRoots(resources: Resource*): List[Resource] = {

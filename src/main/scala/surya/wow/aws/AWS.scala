@@ -7,6 +7,7 @@ import scala.collection.mutable
 
 object AWS {
 
+
   def subnet(vpc: VPC, cidrBlock: String, mapPublicIdOnLaunch: Boolean) = add(Subnet(vpc, cidrBlock, mapPublicIdOnLaunch))
 
 
