@@ -14,13 +14,13 @@ final class Main extends xsbti.AppMain {
   }
 
   def initialState(configuration: xsbti.AppConfiguration): sbt.State = {
-    val commandDefinitions = hello +: BasicCommands.allBasicCommands
+    val commandDefinitions = create +: BasicCommands.allBasicCommands
     val commandsToRun = "iflast shell" +: configuration.arguments.map(_.trim)
     sbt.State(configuration, commandDefinitions, Set.empty, None, commandsToRun, sbt.State.newHistory,
       AttributeMap.empty, initialGlobalLogging, sbt.State.Continue)
   }
 
-  val hello = Command.args("create", "fileName") { (s, args) =>
+  val create = Command.args("create", "fileName") { (s, args) =>
     Commands.create(s.log, args(0))
     s
   }

@@ -1,11 +1,7 @@
 package surya.wow
 
-import surya.wow.aws.AWS
 
 case class Plan(additions: Seq[Resource], deletions: Seq[Resource]) {
-
-
-  implicit val awsProvider = AWS
 
 
   def create(): State = ???
