@@ -1,11 +1,11 @@
 package surya.wow
 
 import sbt.Logger
+import surya.wow.provider.aws.AWS
 
 import scala.io.Source
 import scala.reflect.runtime.currentMirror
 import scala.tools.reflect.ToolBox
-import surya.wow.aws.AWS
 
 object Commands {
   def create(log: Logger, file: String) = {

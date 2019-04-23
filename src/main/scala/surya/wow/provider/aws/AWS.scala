@@ -1,4 +1,4 @@
-package surya.wow.aws
+package surya.wow.provider.aws
 
 import awscala.ec2.EC2
 import surya.wow.ProviderWithState
