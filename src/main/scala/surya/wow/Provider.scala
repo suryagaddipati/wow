@@ -15,7 +15,7 @@ trait Provider {
 }
 
 trait ProviderWithState extends Provider {
-  def state: State = State.current()
+  val state: State = State.current()
 
   def changes = {
 
