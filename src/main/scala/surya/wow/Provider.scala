@@ -1,10 +1,17 @@
 package surya.wow
 
+import scala.collection.convert.Wrappers.MutableSeqWrapper
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+
 
 trait Provider {
-  def resources: Seq[Resource] = List()
+  val resources: mutable.MutableList[Resource] = new mutable.MutableList[Resource]()
 
-  def :+(res: Resource): Provider = this
+  def :+(res: Resource): Provider = {
+    resources += res
+    this
+  }
 
   def changes: Provider.Changes
 }
