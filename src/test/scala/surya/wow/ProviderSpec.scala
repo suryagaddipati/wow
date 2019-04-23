@@ -10,7 +10,7 @@ class ProviderSpec extends FlatSpec {
     override def create(): Any = {}
   }
 
-  case class DummyProvider(state: State = State()) extends ProviderWithState {
+  case class DummyProvider(override val state: State = State()) extends ProviderWithState {
   }
 
 
