@@ -16,7 +16,8 @@ class ProviderSpec extends FlatSpec {
 
   "Plan" should "list additions and deletions" in {
 
-    val provider = DummyProvider(State(Res("meow"))) :+ Res("purr")
+    val provider = DummyProvider(State(Res("meow")))
+    provider :+ Res("purr")
     val additions = provider.changes.additions
     val deletions = provider.changes.deletions
     assert(additions == List(Res("purr")))
@@ -24,7 +25,8 @@ class ProviderSpec extends FlatSpec {
   }
   "Plan" should "additions should list dependencies" in {
     val one = Res("1", Res("1.1"))
-    val plan = DummyProvider() :+ one
+    val plan = DummyProvider()
+    plan :+ one
     val additions = plan.changes.additions
     val deletions = plan.changes.deletions
     assert(additions == List(one, Res("1.1")))

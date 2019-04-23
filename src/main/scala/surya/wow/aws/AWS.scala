@@ -1,33 +1,22 @@
 package surya.wow.aws
 
 import awscala.ec2.EC2
-import surya.wow.Resource
+import surya.wow.ProviderWithState
 
-import scala.collection.mutable
+object AWS extends ProviderWithState {
 
-object AWS {
+  def subnet(vpc: VPC, cidrBlock: String, mapPublicIdOnLaunch: Boolean) = :+(Subnet(vpc, cidrBlock, mapPublicIdOnLaunch))
 
+  def vpc(cidrBlock: String): VPC = :+(VPC(cidrBlock))
 
-  def subnet(vpc: VPC, cidrBlock: String, mapPublicIdOnLaunch: Boolean) = add(Subnet(vpc, cidrBlock, mapPublicIdOnLaunch))
+  def instance(ami: String, instanceType: String): Instance = (Instance(ami, instanceType))
 
+  def eip(instance: Instance) = (EIP(instance))
 
-  def vpc(cidrBlock: String): VPC = VPC(cidrBlock)
+  def internetGateway(vpc: VPC): InternetGateway = :+(InternetGateway(vpc))
 
-  def instance(ami: String, instanceType: String): Instance = add(Instance(ami, instanceType))
+  def route(vpc: VPC, internetGateway: InternetGateway, destinationCidrBlock: String): Route = :+(Route(vpc, internetGateway, destinationCidrBlock))
 
-  def eip(instance: Instance) = add(EIP(instance))
-
-  def internetGateway(vpc: VPC): InternetGateway = add(InternetGateway(vpc))
-
-  def route(vpc: VPC, internetGateway: InternetGateway, destinationCidrBlock: String): Route = add(Route(vpc, internetGateway, destinationCidrBlock))
-
-  var resources = new mutable.MutableList[Resource]()
-
-
-  def add[R <: Resource](r: R): R = {
-    resources += r
-    r
-  }
 
   implicit class RichEC2(val ec2: EC2) extends AnyVal {
     def eip(instanceId: String) = {
