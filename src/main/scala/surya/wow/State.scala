@@ -38,7 +38,7 @@ object State {
       try {
         Some(JsonUtil.fromJson[State](state))
       } catch {
-        case e => {
+        case e: Throwable => {
           e.printStackTrace();
           None
         }
